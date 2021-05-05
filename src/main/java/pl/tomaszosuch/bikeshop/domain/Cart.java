@@ -12,8 +12,7 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "cart")
+@Entity(name = "carts")
 public class Cart {
 
     @Id

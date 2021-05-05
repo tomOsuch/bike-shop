@@ -1,26 +1,26 @@
 package pl.tomaszosuch.bikeshop.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "ORDER")
+@Entity(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue
+    @NonNull
     private Long id;
 
     @Column(name = "order_date")
-    private LocalDate orderDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime orderDate;
 
     @Column(name = "comments")
     private String comments;

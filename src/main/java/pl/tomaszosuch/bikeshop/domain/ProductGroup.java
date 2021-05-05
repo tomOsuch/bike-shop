@@ -9,8 +9,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "PRODUCT_GROUP")
+@Entity(name = "product_group")
 public class ProductGroup {
 
     @Id
