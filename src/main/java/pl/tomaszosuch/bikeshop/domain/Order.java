@@ -29,4 +29,11 @@ public class Order {
     private BigDecimal totalValue;
 
     private boolean isCompleted;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Cart cart;
 }

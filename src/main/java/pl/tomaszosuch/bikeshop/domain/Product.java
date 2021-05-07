@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -28,4 +29,16 @@ public class Product {
 
     @Column(name = "available")
     private boolean available;
+
+    @OneToMany(
+            targetEntity = Item.class,
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Item> items;
+
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ID")
+    private ProductGroup group;
 }

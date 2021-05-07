@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -32,4 +33,20 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(
+            targetEntity = Cart.class,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Cart> carts;
+
+    @OneToMany(
+            targetEntity = Order.class,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Order> orders;
 }

@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -20,4 +17,12 @@ public class Item {
     private Long id;
 
     private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "CART_ID")
+    private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "PRODUCT_ID")
+    private Product product;
 }
