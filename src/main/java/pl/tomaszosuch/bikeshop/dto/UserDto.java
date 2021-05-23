@@ -1,10 +1,10 @@
 package pl.tomaszosuch.bikeshop.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
 @AllArgsConstructor
+@Builder
 public class UserDto {
     private final Long id;
     private final String firstName;

@@ -1,8 +1,11 @@
 package pl.tomaszosuch.bikeshop.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.tomaszosuch.bikeshop.domain.Item;
 import pl.tomaszosuch.bikeshop.dto.ItemDto;
+import pl.tomaszosuch.bikeshop.exception.ItemNotFoundException;
+import pl.tomaszosuch.bikeshop.mapper.ItemMapper;
+import pl.tomaszosuch.bikeshop.service.ItemDbServiceImpl;
 
 import java.util.List;
 
@@ -10,30 +13,38 @@ import java.util.List;
 @RequestMapping("/v1/item")
 public class ItemController {
 
+    private final ItemDbServiceImpl itemDbService;
+    private final ItemMapper itemMapper;
+
+    @Autowired
+    public ItemController(ItemDbServiceImpl itemDbService, ItemMapper itemMapper) {
+        this.itemDbService = itemDbService;
+        this.itemMapper = itemMapper;
+    }
+
     @GetMapping("/getItems")
     public List<ItemDto> getItems() {
-        return List.of(
-                new ItemDto(1L, 2)
-        );
+        return itemMapper.mapToItemDtoList(itemDbService.getItems());
     }
 
     @GetMapping("/getItem/{itemId}")
     public ItemDto getItem(@PathVariable Long itemId) {
-        return new ItemDto(1L, 2);
+        return itemMapper.mapToItemDto(itemDbService.getItem(itemId).orElseThrow(() -> new ItemNotFoundException("")));
     }
 
     @DeleteMapping("/deleteItem/{itemId}")
     public void deleteItem(@PathVariable Long itemId) {
-
+        itemDbService.deleteItem(itemId);
     }
 
     @PostMapping("/createItem")
-    public void createItem(Item item) {
-
+    public ItemDto createItem(ItemDto itemDto) {
+        itemDbService.saveItem(itemMapper.mapToItem(itemDto));
+        return itemDto;
     }
 
     @PutMapping("/updateItem/{itemId}")
     public ItemDto updateItem(@PathVariable Long itemId, @RequestBody ItemDto itemDto) {
-        return new ItemDto(1L, 1);
+        return itemMapper.mapToItemDto(itemDbService.saveItem(itemMapper.mapToItem(itemDto)));
     }
 }

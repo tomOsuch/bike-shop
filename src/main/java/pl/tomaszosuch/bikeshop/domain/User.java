@@ -49,4 +49,13 @@ public class User {
             fetch = FetchType.LAZY
     )
     private List<Order> orders;
+
+    public User(Long id, String firstName, String lastName, String email, String phoneNumber, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+    }
 }

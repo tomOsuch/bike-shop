@@ -2,6 +2,7 @@ package pl.tomaszosuch.bikeshop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pl.tomaszosuch.bikeshop.domain.ProductGroup;
 
 import java.math.BigDecimal;
 
@@ -14,4 +15,5 @@ public class ProductDto {
     private final String description;
     private final BigDecimal price;
     private final boolean available;
+    private final ProductGroup productGroup;
 }

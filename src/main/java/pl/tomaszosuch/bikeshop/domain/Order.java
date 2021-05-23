@@ -34,6 +34,15 @@ public class Order {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "card_id")
     private Cart cart;
+
+    public Order(@NonNull Long id, LocalDateTime orderDate, String comments, BigDecimal totalValue, boolean isCompleted) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.comments = comments;
+        this.totalValue = totalValue;
+        this.isCompleted = isCompleted;
+    }
 }

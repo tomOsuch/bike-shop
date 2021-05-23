@@ -19,10 +19,10 @@ public class Item {
     private int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "CART_ID")
-    private Cart cart;
-
-    @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "CART_ID")
+    private Cart cart;
 }

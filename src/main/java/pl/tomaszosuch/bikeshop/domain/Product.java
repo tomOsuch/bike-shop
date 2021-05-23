@@ -41,4 +41,13 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "GROUP_ID")
     private ProductGroup group;
+
+    public Product(Long id, String name, String description, BigDecimal price, boolean available, ProductGroup group) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.available = available;
+        this.group = group;
+    }
 }

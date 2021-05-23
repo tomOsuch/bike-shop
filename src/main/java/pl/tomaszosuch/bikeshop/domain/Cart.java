@@ -1,8 +1,6 @@
 package pl.tomaszosuch.bikeshop.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,19 +8,18 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity(name = "carts")
 public class Cart {
 
     @Id
     @GeneratedValue
+    @Column(name = "card_id", unique = true)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "User_ID")
     private User user;
-
-    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY)
-    private Order order;
 
     @OneToMany(
             targetEntity = Item.class,
@@ -31,4 +28,8 @@ public class Cart {
             fetch = FetchType.LAZY
     )
     private List<Item> items;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Order order;
 }

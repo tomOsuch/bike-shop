@@ -1,8 +1,13 @@
 package pl.tomaszosuch.bikeshop.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.tomaszosuch.bikeshop.domain.User;
 import pl.tomaszosuch.bikeshop.dto.UserDto;
+import pl.tomaszosuch.bikeshop.exception.UserNotFoundException;
+import pl.tomaszosuch.bikeshop.mapper.UserMapper;
+import pl.tomaszosuch.bikeshop.service.UserDbServiceImpl;
 
 import java.util.List;
 
@@ -10,31 +15,41 @@ import java.util.List;
 @RequestMapping("/v1/user")
 public class UserController {
 
+    private final UserDbServiceImpl userDbService;
+    private final UserMapper userMapper;
+
+    @Autowired
+    public UserController(UserDbServiceImpl userDbService, UserMapper userMapper) {
+        this.userDbService = userDbService;
+        this.userMapper = userMapper;
+    }
+
     @GetMapping("/getUsers")
     public List<UserDto> getUsers() {
-        return List.of(
-                new UserDto(1L, "Jan", "Kowalski", "jan@test.pl", "111222333", "test"),
-                new UserDto(2L, "Janina", "Kowalska", "janina@test.pl", "111222333", "test")
-        );
+        List<User> users = userDbService.getAllUser();
+        return userMapper.mapToUserDtoList(users);
     }
 
     @GetMapping("/getUser/{userId}")
     public UserDto getUser(@PathVariable Long userId) {
-        return new UserDto(1L, "Jan", "Kowalski", "jan@test.pl", "111222333", "test");
+        return userMapper.mapToUserDto(userDbService.getUser(userId).orElseThrow(() -> new UserNotFoundException("")));
     }
 
     @DeleteMapping("/deleteUser/{userId}")
     public void deleteUser(@PathVariable Long userId) {
-
+        userDbService.deleteUser(userId);
     }
 
-    @PostMapping("/createUser")
-    public void createUser(User user) {
-
+    @PostMapping(value = "/createUser", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto  createUser(@RequestBody UserDto userDto) {
+        userDbService.saveUser(userMapper.mapToUser(userDto));
+        return userDto;
     }
 
-    @PutMapping("/updateUser/{userId}")
-    public UserDto  updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
-        return new UserDto(1L, "Jan", "Kowalski", "jan@test.pl", "111222333", "test");
+    @PutMapping("/updateUser")
+    public UserDto updateUser(@RequestBody UserDto userDto) {
+        User user = userMapper.mapToUser(userDto);
+        User updateUser = userDbService.saveUser(user);
+        return userMapper.mapToUserDto(updateUser);
     }
 }
