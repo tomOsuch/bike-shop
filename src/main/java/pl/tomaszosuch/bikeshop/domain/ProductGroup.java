@@ -27,4 +27,9 @@ public class ProductGroup {
             fetch = FetchType.EAGER
     )
     private List<Product> products;
+
+    public ProductGroup(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
